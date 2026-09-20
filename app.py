@@ -1,27 +1,47 @@
 import sys
 import os
 from pathlib import Path
-import gdown
+import time
+import traceback
+
+
+def startup_log(stage):
+    """Write a safe, timestamped startup marker to the Streamlit Cloud logs."""
+    print(f"[startup] {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} | {stage}", flush=True)
+
+
+startup_log("app.py entered")
 
 # Get the repository root directory (go up from dashboard/ to repo root)
 repo_root = Path(__file__).parent
 os.chdir(repo_root)  # Change working directory to repo root
 sys.path.insert(0, str(repo_root))  # Add repo root to Python path
+startup_log("repository path configured")
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import traceback
-import os
 try:
+    startup_log("importing gdown")
+    import gdown
+    startup_log("importing Streamlit")
+    import streamlit as st
+    startup_log("importing pandas and NumPy")
+    import pandas as pd
+    import numpy as np
+    startup_log("importing Plotly")
+    import plotly.express as px
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    startup_log("importing application explainability module")
     from src.explainability import LoanExplainer, load_test_data
 except Exception as e:
     tb_str = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
-    st.error(f"Startup import error:\n```\n{tb_str}\n```")
-    st.stop()
+    print("[startup] import failed; traceback follows", flush=True)
+    print(tb_str, flush=True)
+    if "st" in globals():
+        st.error(f"Startup import error:\n```\n{tb_str}\n```")
+        st.stop()
+    raise
+
+startup_log("imports completed")
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -69,15 +89,20 @@ def load_model_and_data():
 
     # Step 1: Load model (always works if model files are in models/)
     try:
+        startup_log("loading model artifacts")
         with st.spinner("Loading model and initializing SHAP explainer..."):
             explainer = LoanExplainer()
+        startup_log("model artifacts loaded")
     except Exception as e:
+        print("[startup] model artifact loading failed", flush=True)
+        traceback.print_exc()
         st.error(f"Error loading model: {str(e)}")
         st.info("Please ensure model files are available in the 'models/' directory")
         return None, None, None
 
     # Step 2: Download and load test data (may fail on cloud due to gdown limits)
     try:
+        startup_log("loading portfolio data")
         test_path = "data/processed/model_df.parquet"
         file_id = "18njc7poEDmRuH0_W-6wGNQL78OvgBAIb"
 
@@ -97,7 +122,10 @@ def load_model_and_data():
         X_sample = X_sample.loc[sample_indices].reset_index(drop=True)
         if y_sample is not None:
             y_sample = y_sample.loc[sample_indices].reset_index(drop=True)
+        startup_log("portfolio data loaded")
     except Exception as e:
+        print("[startup] portfolio data loading failed", flush=True)
+        traceback.print_exc()
         st.warning(f"⚠️ Could not load test data: {str(e)}")
         st.info("📊 Individual loan risk assessment is still fully available! Navigate to '🔍 Risk Assessment' in the sidebar.")
         X_sample = None
@@ -972,4 +1000,11 @@ def main():
     """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
-    main()
+    startup_log("entering main application")
+    try:
+        main()
+        startup_log("main application completed")
+    except Exception:
+        print("[startup] main application failed; traceback follows", flush=True)
+        traceback.print_exc()
+        raise
