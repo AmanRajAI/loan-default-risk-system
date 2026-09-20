@@ -103,8 +103,8 @@ def load_model_and_data():
     # Step 2: Download and load test data (may fail on cloud due to gdown limits)
     try:
         startup_log("loading portfolio data")
-        test_path = "data/processed/model_df.parquet"
-        file_id = "18njc7poEDmRuH0_W-6wGNQL78OvgBAIb"
+        test_path = "data/processed/model_df_deploy.parquet"
+        file_id = "18bDUBA6iCdmLAcVzToo0vEKJp89UqMpm"
 
         if not os.path.exists(test_path):
             os.makedirs(os.path.dirname(test_path), exist_ok=True)
