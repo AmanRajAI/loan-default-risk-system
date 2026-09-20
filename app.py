@@ -115,7 +115,9 @@ def load_model_and_data():
                 fuzzy=True
             )
 
+        print("[startup] calling load_test_data")
         X_sample, y_sample = load_test_data(test_path)
+        print("[startup] load_test_data completed")
 
         sample_size = min(5000, len(X_sample))
         sample_indices = X_sample.sample(sample_size, random_state=42).index
