@@ -112,7 +112,6 @@ def load_model_and_data():
                 f"https://drive.google.com/uc?id={file_id}",
                 test_path,
                 quiet=False,
-                fuzzy=True
             )
 
         print("[startup] calling load_test_data")
