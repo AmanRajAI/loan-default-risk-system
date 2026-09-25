@@ -4,7 +4,7 @@ A comprehensive machine learning project to predict loan defaults using the Lend
 
 **Bad rate**: The proportion of loans that have become defaulted, indicating the percentage of loans that are unlikely to be fully repaid.
 
-> **🚀 Live Demo**: [Try the app on Hugging Face Spaces](https://shashi-hue-loan-default-risk-system.hf.space/)
+> **🚀 Live Demo**: [Try the app on Hugging Face Spaces](https://aman-raj-loan-default-risk.streamlit.app/)
 
 ## 📖 Project Overview
 
