@@ -187,9 +187,9 @@ The Streamlit dashboard provides:
 
 ### Live Demo
 
-The app is deployed on **Hugging Face Spaces** (free tier, 16GB RAM):
+The app is deployed on **Streamlit** (free tier, 16GB RAM):
 
-> 🔗 [https://shashi-hue-loan-default-risk-system.hf.space/](https://shashi-hue-loan-default-risk-system.hf.space/)
+> 🔗 [https://aman-raj-loan-default-risk.streamlit.app/](https://aman-raj-loan-default-risk.streamlit.app/)
 
 ### Run Locally
 
