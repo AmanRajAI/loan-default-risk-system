@@ -194,7 +194,7 @@ The app is deployed on **Streamlit** (free tier, 16GB RAM):
 ### Run Locally
 
 ```bash
-git clone https://github.com/shashi-hue/loan-default-risk-system.git
+git clone https://github.com/I-AmanRaj377/loan-default-risk-system.git
 cd loan-default-risk-system
 pip install -r requirements.txt
 streamlit run app.py
